@@ -1,0 +1,43 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout do código-fonte
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      # 2. Instala Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Instala pnpm
+      - name: Instalar pnpm
+        run: npm install -g pnpm
+
+      # 4. Valida versões do Node e pnpm
+      - name: Validar versões do Node.js e pnpm
+        run: |
+          node -v
+          pnpm -v
+
+      # 5. Login no Docker Hub
+      - name: Login no Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 6. Build da imagem Docker com tag "latest"
+      - name: Build da imagem Docker
+        run: docker build -t jessefi/infnet-guia:latest .
+
+      # 7. Push da imagem Docker para o Docker Hub
+      - name: Push da imagem Docker
+        run: docker push jessefi/infnet-guia:latest
