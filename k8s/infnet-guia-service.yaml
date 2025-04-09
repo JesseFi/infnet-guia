@@ -1,0 +1,15 @@
+# Versão da API usada para criar o Service
+apiVersion: v1
+# Tipo do recurso que está sendo criado
+kind: Service
+# Metadados de identificação do serviço
+metadata:
+  name: infnet-guia-service  # Nome do service
+spec:
+  type: NodePort  # Tipo do serviço (NodePort permite acesso externo via uma porta do nó)
+  selector:
+    app: infnet-guia  # Seleciona os pods com esse rótulo para rotear o tráfego
+  ports:
+    - port: 3000  # Porta do serviço (externa, visível para os consumidores)
+      targetPort: 3000  # Porta interna no container para onde o tráfego será redirecionado
+      nodePort: 30080  # Porta no nó exposta externamente (opcional – pode ser omitida para alocação automática)

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      - job_name: 'node-exporter'
+        static_configs:
+          - targets: ['node-exporter:9100']
+
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: prometheus-config
+# data:
+#   prometheus.yml: |
+#     global:
+#       scrape_interval: 15s
+#     scrape_configs:
+#       - job_name: 'infnet-guia'
+#         metrics_path: /api/metrics
+#         static_configs:
+#           - targets: ['infnet-guia-service.default.svc.cluster.local:3000']

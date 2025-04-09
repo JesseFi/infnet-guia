@@ -1,0 +1,12 @@
+# PersistentVolumeClaim: reserva armazenamento para o MySQL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce  # Um único pod pode montar para leitura e escrita
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi  # Espaço reservado para o banco
